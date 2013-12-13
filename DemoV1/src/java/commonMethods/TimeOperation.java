@@ -1,7 +1,7 @@
 package commonMethods;
 
 /**
- * Convert the time to its time slot id or convert back
+ * Convert the time to its time slot id or convert back, time slot id start as 0
  * @author Haozhou
  *
  */

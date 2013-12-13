@@ -27,7 +27,7 @@ public class SharkDBHolder extends HttpServlet {
      @Override
     public void init() throws ServletException{
          
-       this.queryProcdssing = new QueryProcessing();
+       this.queryProcdssing = new QueryProcessing(8, 0);
        
     }
     
