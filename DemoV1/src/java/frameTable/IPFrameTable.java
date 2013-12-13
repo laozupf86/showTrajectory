@@ -201,7 +201,7 @@ public class IPFrameTable implements InsertData, SelectData, DeleteData, NNSearc
 				count--;
 			}
 			i++;
-			for (int k = 0; k < count; k++){
+			for (int k = 0; k < count - 1; k++){
 				if (i >=  tfplist.size()){
 					break;
 				}

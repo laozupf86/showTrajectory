@@ -7,12 +7,10 @@ import commonMethods.IsWithinBoundingBox;
 import commonMethods.TimeOperation;
 
 import dataS.IFramePoint;
-import dataS.QueryResultDataStruc;
 import dataS.SamplePoint;
 import dataS.TempFramePoint;
 import dataS.Trajectory;
 import advantageOperators.NNSearch;
-import advantageOperators.WindowQueryInterface;
 import basicOperators.DeleteData;
 import basicOperators.InsertData;
 import basicOperators.SelectData;

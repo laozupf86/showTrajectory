@@ -46,121 +46,10 @@ public class SharkDBHolder extends HttpServlet {
             throws ServletException, IOException {
         
         
-        OutputClass returnObject = null;
-        InfoClass ic = null;
+        //OutputClass returnObject = null;
+        //InfoClass ic = null;
         
-        if(request.getParameter("querytype").equals("NN")){
-            
-            String[] tableName = request.getParameter("table").split(",");
-            String x = request.getParameter("x");
-            String y = request.getParameter("y");
-            String startTime = request.getParameter("startTime");
-            String endTime = request.getParameter("endTime");
-            
-            ArrayList<ResultObject> data = this.queryProcdssing.getResultNN(tableName, Double.parseDouble(x), Double.parseDouble(y), 
-                    Long.parseLong(startTime), Long.parseLong(endTime));
-            
-            ArrayList<RunningTime> rt = new ArrayList<>();
-            ArrayList<Double> datalength = new ArrayList<>();
-            
-            for(ResultObject o : data){
-                rt.add(new RunningTime(o.tableName, o.runningTime));
-            }
-            datalength.add(CalculateTrajectoryDistance.getDistance(data.get(0).data));
-            returnObject = new OutputClass("Yes", "NN", data.get(0).data, rt, datalength);
-            
-        }else if (request.getParameter("querytype").equals("windowquery")){
-            HttpSession user = request.getSession(true);
-            String changeFlag = request.getParameter("changepage");
-            
-            
-              
-            String[] tableName = request.getParameter("table").split(",");
-            String x = request.getParameter("x");
-            String y = request.getParameter("y");
-            String r = request.getParameter("r");
-            String startTime = request.getParameter("startTime");
-            String endTime = request.getParameter("endTime");
-            
-            ArrayList<TrajectoriesObject> data;
-          
-            
-            ArrayList<RunningTime> rt = new ArrayList<>();
-            
-            //System.out.println(startTime)
-            
-            if (changeFlag == null){
-                data = this.queryProcdssing.getResultWinfow(tableName, Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(r), 
-                    Long.parseLong(startTime), Long.parseLong(endTime));
-                
-                
-                for(TrajectoriesObject o : data){
-                    rt.add(new RunningTime(o.tableName, o.runningTime));
-                }
-                
-                OutputClass oc = new OutputClass("Yes", "Window", data.get(0).data, rt, null);
-                
-                user.setAttribute("data", oc);
-                //user.setAttribute("changePage", "yes");
-                
-                
-                
-                //int p = Integer.parseInt(request.getParameter("page"));
-                int n = Integer.parseInt(request.getParameter("number"));
-                
-               ArrayList< ArrayList<SamplePoint>> selectData = new ArrayList<>();
-               ArrayList<Double> datalength = new ArrayList<>();
-               
-               for(int i = 0; i < n; i++){
-                    if (i >= data.get(0).data.size()){
-                        break;
-                    }else{
-                        selectData.add(data.get(0).data.get(i));
-                        datalength.add(CalculateTrajectoryDistance.getDistance(data.get(0).data.get(i)));
-                    }
-                }
-                
-               
-               
-               
-                returnObject = new OutputClass("Yes", "Window", selectData, rt, datalength);
-                   
-            }else{
-                OutputClass oc = (OutputClass) user.getAttribute("data");
-                 
-                ArrayList< ArrayList<SamplePoint>> tempData = (ArrayList< ArrayList<SamplePoint>>) oc.getData();
-                ArrayList< ArrayList<SamplePoint>> selectData = new ArrayList<>();
-                ArrayList<Double> datalength = new ArrayList<>();
-                  
-                int p = Integer.parseInt(request.getParameter("page"));
-                int n = Integer.parseInt(request.getParameter("number"));
-                
-                for(int i = ((p-1)*n ); i < p*n; i++){
-                    if (i >= tempData.size()){
-                        break;
-                    }else{
-                        selectData.add(tempData.get(i));
-                        datalength.add(CalculateTrajectoryDistance.getDistance(tempData.get(i)));
-                    }
-                }
-                
-               returnObject = new OutputClass("Yes", "Window", selectData, oc.getRunningTime(), datalength); 
-                
-            }
-        }else if(request.getParameter("querytype").equals("getinfo")){
-            
-            ArrayList<Double> x = new ArrayList<>();
-            x.add(116.0);
-            x.add(39.0);
-            ArrayList<Long> y = new ArrayList<>();
-            y.add(1235829631000L);
-            y.add(1239141696000L);
-            
-            ic = new InfoClass();
-            ic.centroid = x;
-            ic.timePeriod = y;
-            
-        }
+        
 
        // opc = new OutputClass(tableName, "NN", t.getTrajectory(), ((double)(et-st))/1000000);
         
@@ -171,12 +60,7 @@ public class SharkDBHolder extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
-           if(ic != null){
-               out.println(g.toJson(ic));
-           } else{
-               ic = null;
-               out.println(g.toJson(returnObject));
-           }
+           
           
            
         } finally {            
@@ -228,13 +112,3 @@ public class SharkDBHolder extends HttpServlet {
     }// </editor-fold>
 }
 
-class RunningTime{
-    private String tableName;
-    private double runningTime;
-    
-    public RunningTime(String tableName, double runningTime){
-        this.tableName = tableName;
-        this.runningTime = runningTime;
-    }
-   
-}

@@ -26,14 +26,30 @@ function addPoints(){
             alert(data);
         },
         success: function(data){
-            
+            for(var x in data ){
+                marks[x['tid']] = createNewMarker(x['lat'], x['lng']);
+                marks[x['tid']].setMap(map);
+            }
         }
     });
 }
 
-
-function createNewMarker(){
+function playTrajectory(){
     
+}
+
+
+function createNewMarker(coordiLat, coordiLng){
+    
+    var coordinate = new google.maps.LatLng(coordiLat, coordiLng);
+    
+    var marker = new google.maps.Marker({
+        map: map,
+        position: coordinate,
+        title: ""      
+    });
+    
+    return marker;
 }
 
 function pointMove(markers, tIDs, startLat, startLng, endLat, endLng, wait){
