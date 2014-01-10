@@ -20,12 +20,12 @@ import basicOperators.SelectData;
 public class IPFrameTable implements InsertData, SelectData, DeleteData, NNSearch{
 
 	
-	private long standardTime;
-	private int interval;
-	private int maxJumpSlot;
-	protected DualFrameList dfl;
-	private AuxTable at;
-	protected int n;
+	public long standardTime;
+	public int interval;
+	public int maxJumpSlot;
+	public DualFrameList dfl;
+	public AuxTable at;
+	public int n;
 
 	
 	//gird index variable

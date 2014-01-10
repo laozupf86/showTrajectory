@@ -24,6 +24,11 @@ public class SamplePoint {
 		this.t = t;
 	}
 	
+        public SamplePoint(double x, double y){
+            this.x = x;
+            this.y = y;
+        }
+        
 	/*
 	 * A serious operators  for setting and getting
 	 */

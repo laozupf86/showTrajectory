@@ -5,6 +5,7 @@
 package WebService;
 
 
+import commonMethods.TimeOperation;
 import dataS.SamplePoint;
 import dataS.Trajectory;
 import java.util.ArrayList;
@@ -20,11 +21,7 @@ public class QueryProcessing {
     private parallelFrameTable.IPFrameTable pipt;
     private frameTable.FrameTable ft; 
     private frameTable.IPFrameTable ipt; 
-    private basicTable.BasicTable bt;
-    private deltaBasicTable.BasicTable dbt;
-    private segmentedTable.SegmentedTable st;
-    private deltaSegmentedTable.SegmentedTable dst;
-    
+    private ReadFileString rfs;
     
     //parameters
     private int n;
@@ -33,15 +30,12 @@ public class QueryProcessing {
     public QueryProcessing(int n, int timeInterval){
         
         
-        ReadFileString rfs = new ReadFileString();
+        this.rfs = new ReadFileString();
         
         this.n = n;
         this.timeInterval = timeInterval;
          
-        this.bt= new basicTable.BasicTable();
-        this.dbt= new deltaBasicTable.BasicTable();
-        this.st = new segmentedTable.SegmentedTable();
-        this.dst = new deltaSegmentedTable.SegmentedTable();
+        
         this.ft = new frameTable.FrameTable(rfs.timeString, 60000, 200);
         this.ipt = new frameTable.IPFrameTable(rfs.timeString, 60000, 200, this.n);
         this.pipt = new parallelFrameTable.IPFrameTable(rfs.timeString, 60000, 200, 8);
@@ -52,10 +46,7 @@ public class QueryProcessing {
         sp = commonMethods.LoadFromFile.getArrayPoints(rfs.getFilePath(5), "");
 
         
-        this.bt.importBulkofData(sp);
-        this.dbt.importBulkofData(sp);
-        this.st.importBulkofData(sp);
-        this.dst.importBulkofData(sp);
+       
         this.ft.importBulkofData(sp);
         this.ipt.importBulkofData(sp);
         this.pipt.importBulkofData(sp);
@@ -90,6 +81,10 @@ public class QueryProcessing {
         }
     }
     
+    private int getKeyFrameId(long time){
+        int timeSlot = TimeOperation.getSlot(this.rfs.timeString, timeInterval, time);
+        return timeSlot/this.n + 1;
+    }
     
     private ResultObject getResultNNSingle(String table, double x, double y, long stime, long etime){
         
